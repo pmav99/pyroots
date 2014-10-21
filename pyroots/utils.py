@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# file pyroots/utils.py
+# file pyroots/wrappers.py
 #
 #############################################################################
-# Copyright (c) 2014 by Panagiotis Mavrogiorgos
+# Copyright (c) 2013 by Panagiotis Mavrogiorgos
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -35,12 +35,63 @@
 # @authors: see AUTHORS.txt
 
 
-""" pyroots/utils.py """
+"""
+pyroots/utils.py
+"""
 
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 from __future__ import absolute_import
+
+import sys
+
+# Constants
+EPS = sys.float_info.epsilon
+LOG_MSG = "Iter: %3d x=[% .{precision}f, % .{precision}f]; Δx=% .{precision}f; f=[% .{precision}f, %+.{precision}f]"
+
+
+class Result(object):
+    """ Solver's result. Used for providing a summary. """
+
+    _result_representation = """
+         converged : {converged}
+           message : {msg}
+         iteration : {iterations:3d}
+        func calls : {func_calls:3d}
+                x0 : {x0: 22.16f}
+              xtol : {xtol: 22.16f}
+             f(x0) : {fx0: 22.16f}
+           epsilon : {epsilon: 22.16f}
+        """
+
+    _result_representation_x0_none = """
+         converged : {converged}
+           message : {msg}
+         iteration : {iterations:3d}
+        func calls : {func_calls:3d}
+                x0 : None
+              xtol : {xtol}
+             f(x0) : None
+           epsilon : {epsilon: 22.16f}
+        """
+
+    def __init__(self, x0, fx0, iterations, func_evaluations, converged, xtol, epsilon, msg=""):
+        self.x0 = x0
+        self.fx0 = fx0
+        self.iterations = iterations
+        self.func_calls = func_evaluations
+        self.converged = converged
+        self.msg = msg
+        self.xtol = xtol
+        self.epsilon = epsilon
+
+    def __repr__(self):
+        if self.x0 is None:
+            representation = self._result_representation_x0_none
+        else:
+            representation = self._result_representation
+        return representation.format(**self.__dict__)
 
 
 def nearly_equal(a, b, epsilon):
@@ -96,3 +147,11 @@ def nearly_equal(a, b, epsilon):
         return diff <= epsilon              # absolute error
     else:
         return diff < epsilon * max_ab      # relative  error
+
+
+class PyRootsError(Exception):
+    pass
+
+
+class ConvergenceError(PyRootsError):
+    pass
