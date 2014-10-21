@@ -48,7 +48,7 @@ import unittest
 
 import pytest
 
-from pyroots import Bisect
+from pyroots import Bisect, Ridder
 from pyroots.base import BaseSolver
 from pyroots.utils import EPS, ConvergenceError, nearly_equal
 
@@ -155,12 +155,16 @@ class BoundariesTest(object):
         # http://en.wikipedia.org/wiki/Bisection_method#Example:_Finding_the_root_of_a_polynomial
         f = lambda x: x**3 - x - 2
         a, b = (1, 2)
-        max_iter = 2
+        max_iter = 1
         # while not raising
         solver = self.SolverClass(max_iter=max_iter, raise_on_fail=False)
         result = solver(f, a, b)
         assert result.converged is False
-        assert result.func_calls == 4
+        # The ridder method does two function calls per iteration.
+        if self.SolverClass is Bisect:
+            assert result.func_calls == 3
+        elif self.SolverClass is Ridder:
+            assert result.func_calls == 4
         assert result.iterations == max_iter
         assert result.msg == BaseSolver.messages["iterations"]
         # while raising on errors
@@ -206,4 +210,7 @@ class BoundariesTest(object):
 class TestBisectBoundaries(BoundariesTest):
     def setup_class(self):
         self.SolverClass = Bisect
-        self.solver = Bisect()
+
+class TestRidderBoundaries(BoundariesTest):
+    def setup_class(self):
+        self.SolverClass = Ridder
