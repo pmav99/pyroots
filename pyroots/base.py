@@ -47,7 +47,7 @@ import abc
 import sys
 import logging
 
-from .utils import Result, ConvergenceError, LOG_MSG, EPS
+from .utils import Result, ConvergenceError, LOG_MSG, EPS, nearly_equal
 
 
 class BaseSolver(object):
@@ -100,6 +100,9 @@ class BaseSolver(object):
             logger.info("Solution converged: %r", result)
             return result
 
+    def _debug(self, i, xa, xb, fa, fb):
+        self.logger.debug(self.log_msg, i, xa, xb, xb - xa, fa, fb)
+
     def __call__(self, f, xa, xb, *args, **kwargs):
         """
         Parameters
@@ -128,17 +131,13 @@ class BaseSolver(object):
         """
         return self._solve(f, xa, xb, *args, **kwargs)
 
-    @staticmethod
-    def nearly_equal(a, b, epsilon):
-        return nearly_equal(a, b, epsilon)
-
-    def is_root(self, root, epsilon):
+    def is_root(self, root):
         """
         Return True if the root is sufficiently close to 0.
 
         Just a wrapper around `nearly_equal()`.
         """
-        return self.nearly_equal(0, root, epsilon)
+        return nearly_equal(0, root, self.epsilon)
 
     @abc.abstractmethod
     def _solve(self, f, xa, xb, *args, **kwargs):

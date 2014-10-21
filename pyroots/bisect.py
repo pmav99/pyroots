@@ -1,0 +1,120 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+#
+# file pyroots/bisect.py
+#
+#############################################################################
+# Copyright (c) 2014 by Panagiotis Mavrogiorgos
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# * Redistributions of source code must retain the above copyright notice,
+#   this list of conditions and the following disclaimer.
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+# * Neither the name(s) of the copyright holders nor the names of its
+#   contributors may be used to endorse or promote products derived from this
+#   software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AS IS AND ANY EXPRESS OR
+# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+# EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+# OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+# LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+# NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+# EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#############################################################################
+#
+# @license: http://opensource.org/licenses/BSD-3-Clause
+# @authors: see AUTHORS.txt
+
+"""
+bisect method.
+"""
+
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import absolute_import
+
+import logging
+from math import copysign
+
+from .utils import EPS, Result, ConvergenceError, nearly_equal
+from .base import BaseSolver
+
+
+class Bisect(BaseSolver):
+    """
+    Defines a Solver for the equation `f(x) = 0` in the interval `[xa, xb]` using the Bisection Method.
+
+    Function `f` must be solvable in `[xa, xb]`. Also `f(xa)` and `f(xb)` must
+    have different signs.
+
+    """
+
+    def __init__(self, epsilon=1e-6, xtol=EPS, max_iter=500, raise_on_fail=True, debug_precision=15):
+        super(Bisect, self).__init__(epsilon=epsilon, xtol=xtol, max_iter=max_iter, raise_on_fail=raise_on_fail, debug_precision=debug_precision)
+        self.logger = logging.getLogger(__name__)
+
+    def _solve(self, f, xa, xb, *args, **kwargs):
+        """ Bisect implementation.  """
+        # local names
+        xtol = self.xtol
+
+        # initialize counters
+        i = 0
+        fcalls = 0
+
+        # check that the bracket's interval is sufficiently big.
+        if nearly_equal(xa, xb, xtol):
+            return self._return_result(None, None, i, fcalls, False, "small bracket")
+
+        # check lower bound
+        fa = f(xa, *args, **kwargs)               # First function call
+        fcalls += 1
+        if self.is_root(fa):
+            return self._return_result(xa, fa, i, fcalls, True, "lower bracket")
+
+        # check upper bound
+        fb = f(xb, *args, **kwargs)               # Second function call
+        fcalls += 1
+        self._debug(i, xa, xb, fa, fb)
+        if self.is_root(fb):
+            return self._return_result(xb, fb, i, fcalls, True, "upper bracket")
+
+        # check if the root is bracketed.
+        if fa * fb > 0.0:
+            return self._return_result(None, None, i, fcalls, False, "no bracket")
+
+        # start iterations
+        for i in range(1, self.max_iter + 1):
+            # Bisect the bracket and calculate the new function value.
+            xm = 0.5 * (xa + xb)
+            fm = f(xm, *args, **kwargs)           # New function call.
+            fcalls += 1
+
+            # close the bracket
+            if copysign(1, fm) == copysign(1, fa):
+                xa = xm
+                fa = fm
+            else:
+                xb = xm
+                fb = fm
+            self._debug(i, xa, xb, fa, fb)
+
+            # check for convergence.
+            if self.is_root(fm):
+                return self._return_result(xm, fm, i, fcalls, True, "convergence")
+
+            # check for the new bracket size.
+            if nearly_equal(xa, xb, xtol):
+                return self._return_result(xm, fm, i, fcalls, False, "small bracket")
+
+        return self._return_result(xm, fm, i, fcalls, False, "iterations")
