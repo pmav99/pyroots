@@ -62,7 +62,7 @@ NUMBERS = [
 
 @pytest.mark.parametrize(["num", "epsilon"], itertools.product(NUMBERS, EPSILONS))
 def test_same_sign(num, epsilon):
-    """ Test big numbers (i.e. number >> 1). """
+    """ Test numbers with the same sign. """
     # Define two "big" numbers
     n1 = num
     n2 = num + 9 * epsilon      # if we change "9" to "10" tests will fail!!!
@@ -87,7 +87,7 @@ def test_same_sign(num, epsilon):
 
 @pytest.mark.parametrize(["num", "epsilon"], itertools.product(NUMBERS, EPSILONS))
 def test_opposite_sign(num, epsilon):
-    """ Test opposite numbers. """
+    """ Test numbers with opposite sign. """
     # mpf is a very small positive value. Something in the order of 1e-300
     # The following compraisons are valid for epsilons > sys.float_info.epsilon
     mpf = sys.float_info.min
@@ -105,7 +105,7 @@ def test_opposite_sign(num, epsilon):
 
 
 def test_opposite_sign2():
-    """ Test opposite numbers. """
+    """ Test numbers with opposite sign. """
     # mpf is a very small positive value. Something in the order of 1e-300
     # The following compraisons are valid for epsilons > sys.float_info.epsilon
     mpf = sys.float_info.min
