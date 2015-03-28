@@ -148,6 +148,7 @@ def test_zero(epsilon):
 
 @pytest.mark.parametrize("epsilon", EPSILONS)
 def test_nan(epsilon):
+    """ Test comparisons with NaN. """
     pos = float("inf")
     neg = -float("inf")
     nan = float("nan")
@@ -175,6 +176,7 @@ def test_nan(epsilon):
 
 @pytest.mark.parametrize("epsilon", EPSILONS)
 def test_infinities(epsilon):
+    """ Test comparisons with infinity. """
     pinf = float("inf")
     ninf = -pinf
     max_float = sys.float_info.max
