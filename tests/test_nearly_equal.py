@@ -88,7 +88,7 @@ def test_same_sign(num, epsilon):
 @pytest.mark.parametrize(["num", "epsilon"], itertools.product(NUMBERS, EPSILONS))
 def test_opposite_sign(num, epsilon):
     """ Test opposite numbers. """
-    # mpf is a very small value. Something in the order of 1e-300
+    # mpf is a very small positive value. Something in the order of 1e-300
     # The following compraisons are valid for epsilons > sys.float_info.epsilon
     mpf = sys.float_info.min
 
@@ -106,6 +106,8 @@ def test_opposite_sign(num, epsilon):
 
 def test_opposite_sign2():
     """ Test opposite numbers. """
+    # mpf is a very small positive value. Something in the order of 1e-300
+    # The following compraisons are valid for epsilons > sys.float_info.epsilon
     mpf = sys.float_info.min
     epsilon = 1e-5
     assert not nearly_equal(-1.0, 1.0, epsilon=epsilon)
@@ -122,7 +124,7 @@ def test_opposite_sign2():
 
 @pytest.mark.parametrize("epsilon", EPSILONS)
 def test_ulp(epsilon):
-    # mpf is a very small value. Something in the order of 1e-300
+    # mpf is a very small positive value. Something in the order of 1e-300
     # The following compraisons are valid for epsilons > sys.float_info.epsilon
     mpf = sys.float_info.min
     assert nearly_equal(mpf, -mpf, epsilon)
