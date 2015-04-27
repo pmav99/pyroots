@@ -98,14 +98,13 @@ class BaseSolver(object):
         """.format(**self.__dict__)
 
     def _return_result(self, x0, fx0, iterations, func_evaluations, converged, condition):
-        logger = self.logger
         msg = self.messages[condition]
         result = Result(x0, fx0, iterations, func_evaluations, converged, self.xtol, self.epsilon, msg)
         if not result.converged and self.raise_on_fail:
-            logger.info("Solution did not converge: %r", result)
+            self.logger.info("Solution did not converge: %r", result)
             raise ConvergenceError(msg)
         else:
-            logger.info("Solution converged: %r", result)
+            self.logger.info("Solution converged: %r", result)
             return result
 
     def _debug(self, i, xa, xb, fa, fb):
