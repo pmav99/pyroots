@@ -44,7 +44,6 @@ from __future__ import unicode_literals
 from __future__ import absolute_import
 
 import abc
-import sys
 import logging
 
 from .utils import Result, ConvergenceError, LOG_MSG, EPS, nearly_equal

@@ -47,7 +47,7 @@ from __future__ import absolute_import
 import logging
 from math import sqrt
 
-from .utils import EPS, Result, ConvergenceError, nearly_equal
+from .utils import EPS, nearly_equal
 from .base import BaseSolver
 
 
