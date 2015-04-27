@@ -62,7 +62,7 @@ class BaseSolver(object):
         "iterations": "Exceeded max iterations.",
     }
 
-    def __init__(self, epsilon=1e-6, xtol=EPS, max_iter=500, raise_on_fail=True, debug_precision=15):
+    def __init__(self, epsilon=1e-6, xtol=EPS, max_iter=500, raise_on_fail=True, solver_name="BaseSolver", debug_precision=15):
         """
         Parameters
         ----------
@@ -88,6 +88,15 @@ class BaseSolver(object):
         self.epsilon = epsilon
         self.max_iter = max_iter
         self.raise_on_fail = raise_on_fail
+        self.solver_name = solver_name
+
+    def __repr__(self):
+        return """ `Pyroots.{solver_name}`:\n
+              xtol : {xtol}
+           epsilon : {epsilon}
+        iterations : {max_iter}
+             raise : {raise_on_fail}
+        """.format(**self.__dict__)
 
     def _return_result(self, x0, fx0, iterations, func_evaluations, converged, condition):
         logger = self.logger

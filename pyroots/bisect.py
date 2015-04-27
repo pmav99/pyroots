@@ -60,7 +60,14 @@ class Bisect(BaseSolver):
     """
 
     def __init__(self, epsilon=1e-6, xtol=EPS, max_iter=500, raise_on_fail=True, debug_precision=15):
-        super(Bisect, self).__init__(epsilon=epsilon, xtol=xtol, max_iter=max_iter, raise_on_fail=raise_on_fail, debug_precision=debug_precision)
+        super(Bisect, self).__init__(
+            epsilon=epsilon,
+            xtol=xtol,
+            max_iter=max_iter,
+            raise_on_fail=raise_on_fail,
+            debug_precision=debug_precision,
+            solver_name="Bisect"
+        )
         self.logger = logging.getLogger(__name__)
 
     def _solve(self, f, xa, xb, *args, **kwargs):
