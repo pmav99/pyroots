@@ -81,13 +81,13 @@ class BaseSolver(object):
         if (not isinstance(max_iter, int)) or max_iter < 0:
             raise ArithmeticError("max_iter must be a positive integer, not: %r <%r>" % (max_iter, type(max_iter)))
 
-        self.logger = logging.getLogger(__name__)
         self.log_msg = LOG_MSG.format(precision=debug_precision)
         self.xtol = xtol
         self.epsilon = epsilon
         self.max_iter = max_iter
         self.raise_on_fail = raise_on_fail
         self.solver_name = solver_name
+        self.logger = logging.getLogger("pyroots.{solver_name}".format(solver_name=solver_name))
 
     def __repr__(self):
         return """ `Pyroots.{solver_name}`:\n

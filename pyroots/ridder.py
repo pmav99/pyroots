@@ -44,7 +44,6 @@ from __future__ import print_function
 from __future__ import unicode_literals
 from __future__ import absolute_import
 
-import logging
 from math import sqrt
 
 from .utils import EPS, nearly_equal
@@ -69,7 +68,6 @@ class Ridder(BaseSolver):
             debug_precision=debug_precision,
             solver_name="Ridder"
         )
-        self.logger = logging.getLogger(__name__)
 
     def _solve(self, f, xa, xb, *args, **kwargs):
         """ Ridder implementation.  """
