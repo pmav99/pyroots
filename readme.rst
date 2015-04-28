@@ -29,7 +29,7 @@ Example
     def f(x, a):
         return x ** 2 - a + 1
 
-    # Instead of Brentq you could also import Brenth/Ridder/Bisect
+    # Create the Solver object (instead of Brentq you could also import Brenth/Ridder/Bisect)
     from pyroots import Brentq
     brent = Brentq(epsilon=1e-5)
 
@@ -160,7 +160,7 @@ API
 
 Each solver factory has the following signature::
 
-    def __init__(self, epsilon=1e-6, xtol=EPS, max_iter=500, raise_on_fail=True, solver_name="BaseSolver", debug_precision=10):
+    SolverFactory(epsilon=1e-6, xtol=EPS, max_iter=500, raise_on_fail=True, debug_precision=10)
 
 where:
 
@@ -172,7 +172,7 @@ where:
 
 Each solver object has the following signature::
 
-    solver(f, xa, xb, *args, **kwargs)
+    solver_object(f, xa, xb, *args, **kwargs)
 
 where:
 
