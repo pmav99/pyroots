@@ -48,7 +48,7 @@ import sys
 
 # Constants
 EPS = sys.float_info.epsilon
-LOG_MSG = "Iter: %3d x=[% .{precision}f, % .{precision}f]; Δx=% .{precision}f; f=[% .{precision}f, %+.{precision}f]"
+LOG_MSG = "Iter: %3d; fcall: %3d; x=[% .{precision}f, % .{precision}f]; Δx=% .{precision}f; f=[% .{precision}f, %+.{precision}f]"
 
 
 class Result(object):

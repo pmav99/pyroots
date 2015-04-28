@@ -59,7 +59,7 @@ class Ridder(BaseSolver):
 
     """
 
-    def __init__(self, epsilon=1e-6, xtol=EPS, max_iter=500, raise_on_fail=True, debug_precision=15):
+    def __init__(self, epsilon=1e-6, xtol=EPS, max_iter=500, raise_on_fail=True, debug_precision=10):
         super(Ridder, self).__init__(
             epsilon=epsilon,
             xtol=xtol,
@@ -91,7 +91,7 @@ class Ridder(BaseSolver):
         # check upper bound
         fb = f(xb, *args, **kwargs)               # Second function call
         fcalls += 1
-        self._debug(i, xa, xb, fa, fb)
+        self._debug(i, fcalls, xa, xb, fa, fb)
         if self.is_root(fb):
             return self._return_result(xb, fb, i, fcalls, True, "upper bracket")
 
@@ -105,7 +105,7 @@ class Ridder(BaseSolver):
             xm = 0.5 * (xa + xb)
             fm = f(xm, *args, **kwargs)           # New function call.
             fcalls += 1
-            self._debug(i, xa, xm, fa, fm)
+            self._debug(i, fcalls, xa, xm, fa, fm)
 
             # check for convergence.
             if self.is_root(fm):
@@ -130,7 +130,7 @@ class Ridder(BaseSolver):
             xs = xm + (xm - xa) * sign * fm / t
             fs = f(xs, **kwargs)
             fcalls += 1
-            self._debug(i, xa, xs, fa, fs)
+            self._debug(i, fcalls, xa, xs, fa, fs)
 
             if self.is_root(fs):
                 return self._return_result(xs, fs, i, fcalls, True, "convergence")

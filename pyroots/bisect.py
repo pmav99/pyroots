@@ -58,7 +58,7 @@ class Bisect(BaseSolver):
 
     """
 
-    def __init__(self, epsilon=1e-6, xtol=EPS, max_iter=500, raise_on_fail=True, debug_precision=15):
+    def __init__(self, epsilon=1e-6, xtol=EPS, max_iter=500, raise_on_fail=True, debug_precision=10):
         super(Bisect, self).__init__(
             epsilon=epsilon,
             xtol=xtol,
@@ -90,7 +90,7 @@ class Bisect(BaseSolver):
         # check upper bound
         fb = f(xb, *args, **kwargs)               # Second function call
         fcalls += 1
-        self._debug(i, xa, xb, fa, fb)
+        self._debug(i, fcalls, xa, xb, fa, fb)
         if self.is_root(fb):
             return self._return_result(xb, fb, i, fcalls, True, "upper bracket")
 
@@ -112,7 +112,7 @@ class Bisect(BaseSolver):
             else:
                 xb = xm
                 fb = fm
-            self._debug(i, xa, xb, fa, fb)
+            self._debug(i, fcalls, xa, xb, fa, fb)
 
             # check for convergence.
             if self.is_root(fm):

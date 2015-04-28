@@ -61,7 +61,7 @@ class BaseSolver(object):
         "iterations": "Exceeded max iterations.",
     }
 
-    def __init__(self, epsilon=1e-6, xtol=EPS, max_iter=500, raise_on_fail=True, solver_name="BaseSolver", debug_precision=15):
+    def __init__(self, epsilon=1e-6, xtol=EPS, max_iter=500, raise_on_fail=True, solver_name="BaseSolver", debug_precision=10):
         """
         Parameters
         ----------
@@ -107,8 +107,8 @@ class BaseSolver(object):
             self.logger.info("Solution converged: %r", result)
             return result
 
-    def _debug(self, i, xa, xb, fa, fb):
-        self.logger.debug(self.log_msg, i, xa, xb, xb - xa, fa, fb)
+    def _debug(self, i, fcalls, xa, xb, fa, fb):
+        self.logger.debug(self.log_msg, i, fcalls, xa, xb, xb - xa, fa, fb)
 
     def __call__(self, f, xa, xb, *args, **kwargs):
         """
