@@ -1,10 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# file pyroots/__init__.py
+# file setup.py
 #
 #############################################################################
-# Copyright (c) 2014 by Panagiotis Mavrogiorgos
+# Copyright (c) 2013 by Panagiotis Mavrogiorgos
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -34,38 +34,50 @@
 # @license: http://opensource.org/licenses/BSD-3-Clause
 # @authors: see AUTHORS.txt
 
-""" A python-only implementation of single-variable root finding methods.  """
-
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 from __future__ import absolute_import
 
-# Version
-__major__ = 0       # for major interface/format changes
-__minor__ = 2       # for minor interface/format changes
-__release__ = 0     # for tweaks, bug-fixes, or development
+import os
+from distutils.core import setup
 
-# package information
-__package_name__ = "pyroots"
-__version__ = "%d.%d.%d" % (__major__, __minor__, __release__)
-__license__ = "BSD"
-__description__ = __doc__.split(".")[0]
-__url__ = "http://github.com/pmav99/%s" % __package_name__
-__download_url__ = "http://github.com/pmav99/%s/archive/master.zip" % __package_name__
-__author__ = "Panagiotis Mavrogiorgos"
-__author_email__ = "gmail pmav99"
-
-# set up logging
-import logging
-logging.getLogger('pyroots').addHandler(logging.NullHandler())
-
-# Package imports
-from .utils import ConvergenceError
-from .bisect import Bisect
-from .ridder import Ridder
-from .brent import Brentq, Brenth
-
-__all__ = ["Bisect", "Ridder", "Brenth", "Brentq", "ConvergenceError"]
+import pyroots as package
 
 
+def read_file(fname):
+    try:
+        return open(os.path.join(os.path.dirname(__file__), fname)).read()
+    except IOError:
+        return "File '%s' not found.\n" % fname
+
+setup(
+    name=package.__package_name__,
+    version=package.__version__,
+    description=package.__description__,
+    author=package.__author__,
+    url=package.__url__,
+    download_url=package.__download_url__,
+    author_email=package.__author_email__,
+    provides=[package.__package_name__],
+    long_description=read_file('readme.rst'),  #+ read_file('NEWS.txt'),
+    keywords=['numeric analysis', 'brent', 'bisect', 'ridder'],
+    platforms="OS Independent",
+    packages=[package.__package_name__,],
+    classifiers=[
+        "Development Status :: 3 - Alpha",
+        "License :: OSI Approved :: BSD License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.2",
+        "Programming Language :: Python :: 3.3",
+        "Programming Language :: Python :: Implementation :: CPython",
+        "Programming Language :: Python :: Implementation :: PyPy",
+        "Topic :: Scientific/Engineering",
+        "Topic :: Scientific/Engineering :: Mathematics",
+        "Topic :: Software Development :: Libraries",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Intended Audience :: Developers",
+    ]
+)
