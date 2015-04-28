@@ -49,5 +49,6 @@ logging.getLogger('pyroots').addHandler(logging.NullHandler())
 from .utils import ConvergenceError
 from .bisect import Bisect
 from .ridder import Ridder
+from .brent import Brentq, Brenth
 
-__all__ = ["Bisect", "Ridder", "ConvergenceError"]
+__all__ = ["Bisect", "Ridder", "Brenth", "Brentq", "ConvergenceError"]
