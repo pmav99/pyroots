@@ -147,7 +147,7 @@ All the methods return a ``Result`` object that has the following attributes::
 
 If, for some reason, convergence cannot be achieved, then a ``ConvergenceError``
 is raised.  If you don't want that to happen, then you have to pass ``False`` as
-the value of ``raise_on_fail`` argument (this is the default)::
+the value of ``raise_on_fail`` argument::
 
     def f(x):
         return x ** 2 - 1
