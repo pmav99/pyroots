@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# file pyroots/bisect.py
+# file pyroots/base.py
 #
 #############################################################################
 # Copyright (c) 2014 by Panagiotis Mavrogiorgos

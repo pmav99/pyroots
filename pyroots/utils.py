@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# file pyroots/wrappers.py
+# file pyroots/utils.py
 #
 #############################################################################
 # Copyright (c) 2013 by Panagiotis Mavrogiorgos
