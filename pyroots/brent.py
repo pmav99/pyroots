@@ -159,7 +159,7 @@ class _Brent(BaseSolver):
 
 class Brentq(_Brent):
     """
-    Defines a Solver for the equation `f(x) = 0` in the interval `[xa, xb]` using Ridder's Method.
+    Defines a Solver for the equation `f(x) = 0` in the interval `[xa, xb]` using Brent's Method.
 
     Function `f` must be solvable in `[xa, xb]`. Also `f(xa)` and `f(xb)` must
     have different signs.
