@@ -33,7 +33,7 @@ Example
     from pyroots import Brentq
     brent = Brentq(epsilon=1e-5)
 
-    # solve the function in `[-3, 2]` while `a` is equal to 2
+    # solve the function in `[-3, 0]` while `a` is equal to 2
     result = brent(f, -3, 0, a=2)
     print(result)
 
