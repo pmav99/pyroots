@@ -42,7 +42,7 @@ from __future__ import absolute_import
 
 # Version
 __major__ = 0       # for major interface/format changes
-__minor__ = 2       # for minor interface/format changes
+__minor__ = 3       # for minor interface/format changes
 __release__ = 0     # for tweaks, bug-fixes, or development
 
 # package information
@@ -66,5 +66,3 @@ from .ridder import Ridder
 from .brent import Brentq, Brenth
 
 __all__ = ["Bisect", "Ridder", "Brenth", "Brentq", "ConvergenceError"]
-
-
