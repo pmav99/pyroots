@@ -40,7 +40,7 @@ from __future__ import unicode_literals
 from __future__ import absolute_import
 
 import os
-from distutils.core import setup
+from setuptools import setup
 
 import pyroots as package
 
@@ -65,7 +65,7 @@ setup(
     platforms="OS Independent",
     packages=[package.__package_name__,],
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 2.7",
