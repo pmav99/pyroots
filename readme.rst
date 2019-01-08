@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/pmav99/pyroots.svg?branch=master)](https://travis-ci.com/pmav99/pyroots)
+
 pyroots
 =======
 
