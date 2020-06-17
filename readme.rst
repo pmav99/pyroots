@@ -155,7 +155,7 @@ the value of ``raise_on_fail`` argument::
     def f(x):
         return x ** 2 - 1
 
-    result = brent(f, xa=-10, xb=-5, raise_on_fail=False):
+    result = brent(f, xa=-10, xb=-5, raise_on_fail=False)
     print(result)
 
 API
