@@ -42,7 +42,7 @@ from __future__ import absolute_import
 
 # package information
 __package_name__ = "pyroots"
-__version__ = "0.3.3"
+__version__ = "0.4.0"
 __license__ = "BSD"
 __description__ = __doc__.split(".")[0]
 __url__ = "http://github.com/pmav99/%s" % __package_name__
