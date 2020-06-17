@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyroots"
-version = "0.4.0"
+version = "0.5.0"
 description = "Pure python single variable function solvers"
 homepage = "https://github.com/pmav99/pyroots"
 repository = "https://github.com/pmav99/pyroots"
