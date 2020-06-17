@@ -55,30 +55,32 @@ class Result(object):
     """ Solver's result. Used for providing a summary. """
 
     _result_representation = """
-         converged : {converged}
-           message : {msg}
-        iterations : {iterations:3d}
-        func calls : {func_calls:3d}
-                x0 : {x0: 22.16f}
-              xtol : {xtol: 22.16f}
-             f(x0) : {fx0: 22.16f}
-           epsilon : {epsilon: 22.16f}
-             steps : {steps}
-        """
+ converged : {converged}
+   message : {msg}
+iterations : {iterations:3d}
+func calls : {func_calls:3d}
+        x0 : {x0: 22.16f}
+      xtol : {xtol: 22.16f}
+     f(x0) : {fx0: 22.16f}
+   epsilon : {epsilon: 22.16f}
+   x_steps : {x_steps}
+  fx_steps : {fx_steps}
+""".strip()
 
     _result_representation_x0_none = """
-         converged : {converged}
-           message : {msg}
-        iterations : {iterations:3d}
-        func calls : {func_calls:3d}
-                x0 : None
-              xtol : {xtol}
-             f(x0) : None
-           epsilon : {epsilon: 22.16f}
-             steps : {steps}
-        """
+ converged : {converged}
+   message : {msg}
+iterations : {iterations:3d}
+func calls : {func_calls:3d}
+        x0 : None
+      xtol : {xtol}
+     f(x0) : None
+   epsilon : {epsilon: 22.16f}
+   x_steps : {x_steps}
+  fx_steps : {fx_steps}
+""".strip()
 
-    def __init__(self, x0, fx0, iterations, func_evaluations, converged, xtol, epsilon, steps, msg=""):
+    def __init__(self, x0, fx0, iterations, func_evaluations, converged, xtol, epsilon, x_steps, fx_steps, msg=""):
         self.x0 = x0
         self.fx0 = fx0
         self.iterations = iterations
@@ -87,7 +89,8 @@ class Result(object):
         self.msg = msg
         self.xtol = xtol
         self.epsilon = epsilon
-        self.steps = steps
+        self.x_steps = x_steps
+        self.fx_steps = fx_steps
 
     def __repr__(self):
         if self.x0 is None:

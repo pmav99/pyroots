@@ -76,30 +76,33 @@ class Bisect(BaseSolver):
         # initialize counters
         i = 0
         fcalls = 0
-        steps = []
+        x_steps = []
+        fx_steps = []
 
         # check that the bracket's interval is sufficiently big.
         if nearly_equal(xa, xb, xtol):
-            return self._return_result(None, None, i, fcalls, None, False, "small bracket")
+            return self._return_result(None, None, i, fcalls, None, None, False, "small bracket")
 
         # check lower bound
         fa = f(xa, *args, **kwargs)               # First function call
         fcalls += 1
-        steps.append(fa)
+        x_steps.append(xa)
+        fx_steps.append(fa)
         if self.is_root(fa):
-            return self._return_result(xa, fa, i, fcalls, steps, True, "lower bracket")
+            return self._return_result(xa, fa, i, fcalls, x_steps, fx_steps, True, "lower bracket")
 
         # check upper bound
         fb = f(xb, *args, **kwargs)               # Second function call
         fcalls += 1
-        steps.append(fb)
+        x_steps.append(xb)
+        fx_steps.append(fb)
         self._debug(i, fcalls, xa, xb, fa, fb)
         if self.is_root(fb):
-            return self._return_result(xb, fb, i, fcalls, steps, True, "upper bracket")
+            return self._return_result(xb, fb, i, fcalls, x_steps, fx_steps, True, "upper bracket")
 
         # check if the root is bracketed.
         if fa * fb > 0.0:
-            return self._return_result(None, None, i, fcalls, steps, False, "no bracket")
+            return self._return_result(None, None, i, fcalls, x_steps, fx_steps, False, "no bracket")
 
         # start iterations
         for i in range(1, self.max_iter + 1):
@@ -107,7 +110,8 @@ class Bisect(BaseSolver):
             xm = 0.5 * (xa + xb)
             fm = f(xm, *args, **kwargs)           # New function call.
             fcalls += 1
-            steps.append(fm)
+            x_steps.append(xm)
+            fx_steps.append(fm)
 
             # close the bracket
             if copysign(1, fm) == copysign(1, fa):
@@ -120,10 +124,10 @@ class Bisect(BaseSolver):
 
             # check for convergence.
             if self.is_root(fm):
-                return self._return_result(xm, fm, i, fcalls, steps, True, "convergence")
+                return self._return_result(xm, fm, i, fcalls, x_steps, fx_steps, True, "convergence")
 
             # check for the new bracket size.
             if nearly_equal(xa, xb, xtol):
-                return self._return_result(xm, fm, i, fcalls, steps, False, "small bracket")
+                return self._return_result(xm, fm, i, fcalls, x_steps, fx_steps, False, "small bracket")
 
-        return self._return_result(xm, fm, i, fcalls, steps, False, "iterations")
+        return self._return_result(xm, fm, i, fcalls, x_steps, fx_steps, False, "iterations")
