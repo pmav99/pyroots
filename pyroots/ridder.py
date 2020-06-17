@@ -77,27 +77,30 @@ class Ridder(BaseSolver):
         # initialize counters
         i = 0
         fcalls = 0
+        steps = []
 
         #check that the bracket's interval is sufficiently big.
         if nearly_equal(xa, xb, xtol):
-            return self._return_result(None, None, i, fcalls, False, "small bracket")
+            return self._return_result(None, None, i, fcalls, None, False, "small bracket")
 
         # check lower bound
         fa = f(xa, *args, **kwargs)               # First function call
         fcalls += 1
+        steps.append(fa)
         if self.is_root(fa):
-            return self._return_result(xa, fa, i, fcalls, True, "lower bracket")
+            return self._return_result(xa, fa, i, fcalls, steps, True, "lower bracket")
 
         # check upper bound
         fb = f(xb, *args, **kwargs)               # Second function call
         fcalls += 1
+        steps.append(fb)
         self._debug(i, fcalls, xa, xb, fa, fb)
         if self.is_root(fb):
-            return self._return_result(xb, fb, i, fcalls, True, "upper bracket")
+            return self._return_result(xb, fb, i, fcalls, steps, True, "upper bracket")
 
         # check if the root is bracketed.
         if fa * fb > 0.0:
-            return self._return_result(None, None, i, fcalls, False, "no bracket")
+            return self._return_result(None, None, i, fcalls, steps, False, "no bracket")
 
         # start iterations
         for i in range(1, self.max_iter + 1):
@@ -105,11 +108,12 @@ class Ridder(BaseSolver):
             xm = 0.5 * (xa + xb)
             fm = f(xm, *args, **kwargs)           # New function call.
             fcalls += 1
+            steps.append(fm)
             self._debug(i, fcalls, xa, xm, fa, fm)
 
             # check for convergence.
             if self.is_root(fm):
-                return self._return_result(xm, fm, i, fcalls, True, "convergence")
+                return self._return_result(xm, fm, i, fcalls, steps, True, "convergence")
 
             # `t` is the denominator followingly
             # if `t == 0` then the ridder's method cannot be applied due to a
@@ -130,10 +134,11 @@ class Ridder(BaseSolver):
             xs = xm + (xm - xa) * sign * fm / t
             fs = f(xs, **kwargs)
             fcalls += 1
+            steps.append(fs)
             self._debug(i, fcalls, xa, xs, fa, fs)
 
             if self.is_root(fs):
-                return self._return_result(xs, fs, i, fcalls, True, "convergence")
+                return self._return_result(xs, fs, i, fcalls, steps, True, "convergence")
 
             # When ftol is very small (e.g. 1e-15) then there are cases that the
             # method can't converge in a reasonable amount of iterations.
@@ -143,7 +148,7 @@ class Ridder(BaseSolver):
             # during the iterations.
             # NOTE: Perhaps this check is not very robust.
             if i > 1 and abs(xs - xs_old) < xtol and abs(xm - xm_old) < xtol:
-                result = self._return_result(xs, fs, i, fcalls, False, "Precision not achieved. Iteration stagnant.")
+                result = self._return_result(xs, fs, i, fcalls, steps, False, "Precision not achieved. Iteration stagnant.")
                 self.logger.debug(result)
                 return result
 
@@ -168,10 +173,10 @@ class Ridder(BaseSolver):
             #print(abs(max(xa, xb)) * xtol)
             #if abs(xb - xa) < abs(max(xa, xb)) * xtol:
             if nearly_equal(xa, xb, xtol):
-                return self._return_result(xs, fs, i, fcalls, False, "small bracket")
+                return self._return_result(xs, fs, i, fcalls, steps, False, "small bracket")
 
             # Store values of the previous iteration.
             xm_old = xm
             xs_old = xs
 
-        return self._return_result(xm, fm, i, fcalls, False, "iterations")
+        return self._return_result(xm, fm, i, fcalls, steps, False, "iterations")
