@@ -65,7 +65,7 @@ func calls : {func_calls:3d}
    epsilon : {epsilon: 22.16f}
    x_steps : {x_steps}
   fx_steps : {fx_steps}
-""".strip()
+""".rstrip()
 
     _result_representation_x0_none = """
  converged : {converged}
@@ -78,13 +78,13 @@ func calls : {func_calls:3d}
    epsilon : {epsilon: 22.16f}
    x_steps : {x_steps}
   fx_steps : {fx_steps}
-""".strip()
+""".rstrip()
 
-    def __init__(self, x0, fx0, iterations, func_evaluations, converged, xtol, epsilon, x_steps, fx_steps, msg=""):
+    def __init__(self, x0, fx0, iterations, converged, xtol, epsilon, x_steps, fx_steps, msg=""):
         self.x0 = x0
         self.fx0 = fx0
         self.iterations = iterations
-        self.func_calls = func_evaluations
+        self.func_calls = len(fx_steps)
         self.converged = converged
         self.msg = msg
         self.xtol = xtol

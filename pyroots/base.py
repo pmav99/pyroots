@@ -97,9 +97,9 @@ class BaseSolver(object):
              raise : {raise_on_fail}
         """.format(**self.__dict__)
 
-    def _return_result(self, x0, fx0, iterations, func_evaluations, x_steps, fx_steps, converged, condition):
+    def _return_result(self, x0, fx0, iterations, x_steps, fx_steps, converged, condition):
         msg = self.messages[condition]
-        result = Result(x0, fx0, iterations, func_evaluations, converged, self.xtol, self.epsilon, x_steps, fx_steps, msg)
+        result = Result(x0, fx0, iterations, converged, self.xtol, self.epsilon, x_steps, fx_steps, msg)
         if not result.converged and self.raise_on_fail:
             self.logger.info("Solution did not converge: %r", result)
             raise ConvergenceError(msg)

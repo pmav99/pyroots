@@ -60,7 +60,6 @@ class _Brent(BaseSolver):
 
         # initialize counters
         i = 0
-        fcalls = 0
         x_steps = []
         fx_steps = []
 
@@ -70,28 +69,26 @@ class _Brent(BaseSolver):
 
         #check that the bracket's interval is sufficiently big.
         if nearly_equal(xa, xb, xtol):
-            return self._return_result(None, None, i, fcalls, None, None, False, "small bracket")
+            return self._return_result(None, None, i, x_steps, fx_steps, False, "small bracket")
 
         # check lower bound
         fpre = f(xpre, *args, **kwargs)             # First function call
-        fcalls += 1
         x_steps.append(xpre)
         fx_steps.append(fpre)
         if self.is_root(fpre):
-            return self._return_result(xpre, fpre, i, fcalls, x_steps, fx_steps, True, "lower bracket")
+            return self._return_result(xpre, fpre, i, x_steps, fx_steps, True, "lower bracket")
 
         # check upper bound
         fcur = f(xcur, *args, **kwargs)             # Second function call
-        fcalls += 1
         x_steps.append(xcur)
         fx_steps.append(fcur)
-        self._debug(i, fcalls, xpre, xcur, fpre, fcur)
+        self._debug(i, len(fx_steps), xpre, xcur, fpre, fcur)
         if self.is_root(fcur):
-            return self._return_result(xcur, fcur, i, fcalls, x_steps, fx_steps, True, "upper bracket")
+            return self._return_result(xcur, fcur, i, x_steps, fx_steps, True, "upper bracket")
 
         # check if the root is bracketed.
         if fpre * fcur > 0.0:
-            return self._return_result(None, None, i, fcalls, x_steps, fx_steps, False, "no bracket")
+            return self._return_result(None, None, i, x_steps, fx_steps, False, "no bracket")
 
         # start iterations
         for i in range(self.max_iter):
@@ -110,12 +107,12 @@ class _Brent(BaseSolver):
 
             # check for convergence
             #if self.is_root(fcur):
-                #return self._return_result(xcur, fcur, i + 1, fcalls, x_steps, fx_steps, True, "convergence")
+                #return self._return_result(xcur, fcur, i + 1, x_steps, fx_steps, True, "convergence")
 
             # check bracket
             sbis = (xblk - xcur) / 2;
             if abs(sbis) < xtol:
-                return self._return_result(xcur, fcur, i + 1, fcalls, x_steps, fx_steps, False, "small bracket")
+                return self._return_result(xcur, fcur, i + 1, x_steps, fx_steps, False, "small bracket")
 
             # calculate short step
             #self.logger.debug("spre %f; fcur %f; fpre %f; xblk %f; sbis %f", spre, fcur, fpre, xblk, sbis)
@@ -155,14 +152,13 @@ class _Brent(BaseSolver):
                 xcur += xtol if (sbis > 0) else -xtol
 
             fcur = f(xcur, *args, **kwargs)     # function evaluation
-            fcalls += 1
             x_steps.append(xcur)
             fx_steps.append(fcur)
-            self._debug(i + 1, fcalls, xpre, xcur, fpre, fcur)
+            self._debug(i + 1, len(fx_steps), xpre, xcur, fpre, fcur)
             if self.is_root(fcur):
-                return self._return_result(xcur, fcur, i, fcalls, x_steps, fx_steps, True, "convergence")
+                return self._return_result(xcur, fcur, i, x_steps, fx_steps, True, "convergence")
 
-        return self._return_result(xcur, fcur, i + 1, fcalls, x_steps, fx_steps, False, "iterations")
+        return self._return_result(xcur, fcur, i + 1, x_steps, fx_steps, False, "iterations")
 
 
 class Brentq(_Brent):
