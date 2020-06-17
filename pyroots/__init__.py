@@ -43,7 +43,7 @@ from __future__ import absolute_import
 # Version
 __major__ = 0       # for major interface/format changes
 __minor__ = 3       # for minor interface/format changes
-__release__ = 2     # for tweaks, bug-fixes, or development
+__release__ = 3     # for tweaks, bug-fixes, or development
 
 # package information
 __package_name__ = "pyroots"
