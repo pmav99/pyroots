@@ -86,10 +86,6 @@ with pip:
 
     pip install pyroots
 
-or from source:
-
-    python setup.py install
-
 Usage
 -----
 
@@ -104,11 +100,13 @@ dependent variable and, apart from that, the function can also take any
 number of positional/keyword arguments. For example the following
 functions are totally valid ones:
 
-    def f(x, a):
-        return x ** 2 - a + 1
+```python
+def f(x, a):
+    return x ** 2 - a + 1
 
-    def g(x, a, b, c=3):
-        return x ** 2 + a ** b - c
+def g(x, a, b, c=3):
+    return x ** 2 + a ** b - c
+```
 
 Solver Objects
 --------------
@@ -116,17 +114,19 @@ Solver Objects
 The first thing you have to do is to create a `Solver` object for the
 method you want to use:
 
-    from pyroots import Brentq
+```python
+from pyroots import Brentq
 
-    brent = Brentq()
+brent = Brentq()
+```
 
 When you create the `Solver` object, you can specify several parameters
 that will affect the convergence. The most important are:
 
 -   epsilon which specifies the number of digits that will be taken
     under consideration when checking for convergence. It defaults to
-    1e-6.
--   raise\_on\_fail which will raise an exception if convergence failed.
+    `1e-6`.
+-   `raise_on_fail` which will raise an exception if convergence failed.
     It defaults to True.
 
 Using the above function definitions, in order to find the root of `f`
@@ -134,11 +134,13 @@ you must first define an interval that contains the root. Let's say that
 this interval is defined as `[xa, xb]`. In this case you will call the
 solver like this:
 
-    def f(x, a):
-        return x ** 2 - a + 1
+``` python
+def f(x, a):
+    return x ** 2 - a + 1
 
-    solver = Brentq()
-    result = solver(f, xa, xb, a=3)
+solver = Brentq()
+result = solver(f, xa, xb, a=3)
+```
 
 Result Objects
 --------------
@@ -146,29 +148,37 @@ Result Objects
 All the methods return a `Result` object that has the following
 attributes:
 
-    result.x0               # the root
-    result.fx0              # the value of ``f(x0)`
-    result.convergence      # True/False
-    result.iterations       # the number of iterations
-    result.func_calls       # the number of function evaluations.
-    result.msg              # a descriptive message regarding the convergence (or the failure of convergence)
+```
+result.x0               # the root
+result.fx0              # the value of ``f(x0)`
+result.convergence      # True/False
+result.iterations       # the number of iterations
+result.func_calls       # the number of function evaluations.
+result.msg              # a descriptive message regarding the convergence (or the failure of convergence)
+result.x_steps          # a list containing the x values  that have been tried while the solver run
+result.fx_steps         # a list containing the f(x) values that have been calculated while the solver run
+```
 
 If, for some reason, convergence cannot be achieved, then a
 `ConvergenceError` is raised. If you don't want that to happen, then you
 have to pass `False` as the value of `raise_on_fail` argument:
 
-    def f(x):
-        return x ** 2 - 1
+```python
+def f(x):
+    return x ** 2 - 1
 
-    result = brent(f, xa=-10, xb=-5, raise_on_fail=False)
-    print(result)
+result = brent(f, xa=-10, xb=-5, raise_on_fail=False)
+print(result)
+```
 
 API
 ---
 
 Each solver factory has the following signature:
 
-    SolverFactory(epsilon=1e-6, xtol=EPS, max_iter=500, raise_on_fail=True, debug_precision=10)
+```python
+SolverFactory(epsilon=1e-6, xtol=EPS, max_iter=500, raise_on_fail=True, debug_precision=10)
+```
 
 where:
 
@@ -180,7 +190,9 @@ where:
 
 Each solver object has the following signature:
 
-    solver_object(f, xa, xb, *args, **kwargs)
+```python
+solver_object(f, xa, xb, *args, **kwargs)
+```
 
 where:
 
